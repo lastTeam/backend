@@ -1,0 +1,101 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Model for 'User'
+model User {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  firstName String
+  lastName  String
+  username  String     @unique
+  email     String     @unique
+  password  String
+  roles     Role
+  isAdmin   Boolean    @default(false)
+  reviews   Review[]   @relation("UserReviews")
+  orders    Order[]    @relation("UserOrders")
+  products  Product[]   
+  chatsSent Chat[]     @relation("SenderChats")
+  chatsReceived Chat[] @relation("ReceiverChats")
+}
+
+// Enum for user roles
+enum Role {
+  BUYER
+  SELLER
+}
+
+// Model for 'Category'
+model Category {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  name      String    @unique
+  products  Product[]
+}
+
+// Model for 'Product'
+model Product {
+  id             Int       @id @default(autoincrement())
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  title          String
+  description    String
+  sku            String    @unique
+  basePrice      Decimal
+  discountPrice  Decimal
+  colors         Json
+  variants       Json
+  images         Json
+  categoryId     Int
+  category       Category  @relation(fields: [categoryId], references: [id])
+  reviews        Review[]  @relation("ProductReviews")
+  orders         Order[]   @relation("ProductOrders")
+  users          User[]    
+}
+
+// Model for 'Review'
+model Review {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  rating    Int
+  userId    Int
+  user      User     @relation("UserReviews", fields: [userId], references: [id])
+  productId Int
+  product   Product  @relation("ProductReviews", fields: [productId], references: [id])
+}
+
+// Model for 'Order'
+model Order {
+  id            Int      @id @default(autoincrement())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  price         Decimal
+  status        String
+  paymentIntent String
+  paymentStatus String
+  userId        Int
+  user          User     @relation("UserOrders", fields: [userId], references: [id])
+  productId     Int
+  product       Product  @relation("ProductOrders", fields: [productId], references: [id])
+}
+
+// Model for 'Chat'
+model Chat {
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  message     String
+  senderId    Int
+  sender      User     @relation("SenderChats", fields: [senderId], references: [id])
+  receiverId  Int
+  receiver    User     @relation("ReceiverChats", fields: [receiverId], references: [id])
+}
