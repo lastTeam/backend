@@ -78,3 +78,5 @@ model Order {
   productId     Int
   product       Product  @relation("ProductOrders", fields: [productId], references: [id])
 }
+
+
