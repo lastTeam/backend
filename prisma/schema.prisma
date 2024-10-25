@@ -1,3 +1,4 @@
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -99,3 +100,4 @@ model Chat {
   receiverId  Int
   receiver    User     @relation("ReceiverChats", fields: [receiverId], references: [id])
 }
+
