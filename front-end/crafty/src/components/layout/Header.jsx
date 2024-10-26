@@ -4,7 +4,10 @@ import { Link } from "react-router-dom";
 export function Header() {
   return (
     <header>
-      <div className="flex flex-wrap gap-10 justify-end py-2 pr-4 pl-20 w-full text-sm bg-gray-100 max-md:pl-5 max-md:max-w-full">
+      <div
+        className="flex flex-wrap gap-10 justify-end py-2 pr-4 pl-20 w-full text-sm max-md:pl-5 max-md:max-w-full"
+        style={{ backgroundColor: "#EBBE43" }} // Updated background color
+      >
         <div className="flex gap-3">
           <img
             loading="lazy"
@@ -12,21 +15,12 @@ export function Header() {
             alt=""
             className="object-contain shrink-0 w-6 aspect-square"
           />
-          <p className="font-semibold leading-loose text-center basis-auto text-neutral-700">
+          <p
+            className="font-semibold leading-loose text-center basis-auto"
+            style={{ color: "white" }} // Text color updated to white
+          >
             30% off storewide — Limited time!
           </p>
-          <Link
-            to="/shop"
-            className="flex overflow-hidden relative flex-col font-medium leading-6 text-blue-500 border-b border-solid aspect-[3.792] border-b-blue-500 w-[91px]"
-          >
-            <img
-              loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets/9ae4fe26caea4ec4b922b3cd752ddc12/d2e49227d6b988b97e4ecb7c082440861ff6d4240619472d35141e2f5cf290b0?apiKey=9ae4fe26caea4ec4b922b3cd752ddc12&"
-              alt=""
-              className="object-cover absolute inset-0 size-full"
-            />
-            Shop Now
-          </Link>
         </div>
         <img
           loading="lazy"
@@ -35,37 +29,52 @@ export function Header() {
           className="object-contain shrink-0 my-auto w-5 aspect-square"
         />
       </div>
-      <nav className="flex flex-wrap gap-10 justify-between items-center px-40 py-4 w-full bg-white max-md:px-5 max-md:max-w-full">
+      <nav
+        className="flex flex-wrap gap-10 justify-between items-center px-40 py-4 w-full max-md:px-5 max-md:max-w-full"
+        style={{ backgroundColor: "#EBBE43" }} // Updated background color
+      >
         <Link
           to="/"
-          className="self-stretch my-auto text-2xl font-medium leading-none text-center text-black w-[105px]"
+          className="self-stretch my-auto text-2xl font-medium leading-none text-center"
+          style={{ color: "white" }} // Brand name color updated to white
         >
-          3legant<span className="text-zinc-500">.</span>
+          Crafty<span className="text-white">.</span>
         </Link>
-        <div className="flex gap-10 justify-center items-center self-stretch my-auto text-sm font-medium leading-6 min-w-[240px] text-zinc-500">
+        <div className="flex gap-10 justify-center items-center self-stretch my-auto text-sm font-medium leading-6 min-w-[240px]">
           {["Home", "Shop", "Product", "Contact Us"].map((item) => (
             <Link
               key={item}
               to={`/${item.toLowerCase().replace(" ", "-")}`}
               className={`flex gap-0.5 items-center self-stretch my-auto whitespace-nowrap ${
-                item === "Home" ? "text-neutral-900" : ""
+                item === "Home" ? "text-white" : ""
               }`}
+              style={{ color: "white" }} // Links color updated to white
             >
               {item}
             </Link>
           ))}
         </div>
-        <div className="flex gap-4 items-center self-stretch my-auto">
+        {/* Search Bar */}
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Search..."
+            className="p-2 border border-gray-300 rounded"
+            style={{ minWidth: "200px" }} // You can adjust the width as needed
+          />
           <button
             aria-label="Search"
-            className="object-contain shrink-0 self-stretch my-auto w-6 aspect-square"
+            className="absolute right-0 top-0 bottom-0 flex items-center justify-center p-2 bg-white border-l border-gray-300 rounded-r"
           >
             <img
               loading="lazy"
               src="https://cdn.builder.io/api/v1/image/assets/9ae4fe26caea4ec4b922b3cd752ddc12/74d610171b49cc3b18b456fe06d02bff2a8f09126ee10249b3afcbc71e046e51?apiKey=9ae4fe26caea4ec4b922b3cd752ddc12&"
-              alt=""
+              alt="Search Icon"
+              className="w-4 h-4"
             />
           </button>
+        </div>
+        <div className="flex gap-4 items-center self-stretch my-auto">
           <button
             aria-label="Account"
             className="object-contain shrink-0 self-stretch my-auto w-6 aspect-square"

@@ -10,35 +10,131 @@ import { Newsletter } from "./Newsletter";
 
 const products = [
   {
+    id: 1,
     image:
-      "https://cdn.builder.io/api/v1/image/assets/9ae4fe26caea4ec4b922b3cd752ddc12/2b854ef52b77adb5889a79f32f474a8bf34925543111db6e33ebf77b3f30e106?apiKey=9ae4fe26caea4ec4b922b3cd752ddc12&",
-    name: "Loveseat Sofa",
-    price: "199.00",
-    originalPrice: "400.00",
+      "https://i.pinimg.com/474x/d0/98/0e/d0980ee3786258228c0e73c61f64c727.jpg",
+    name: "Product 1",
+    price: 199.0,
+    originalPrice: 400.0,
     isNew: true,
     discount: 50,
     rating:
-      "https://cdn.builder.io/api/v1/image/assets/9ae4fe26caea4ec4b922b3cd752ddc12/ac91ee13fa60a089929cfb3c84d88c4c7e44993d53054e7d2e3c0f8ca3250815?apiKey=9ae4fe26caea4ec4b922b3cd752ddc12&",
+      "https://i.pinimg.com/564x/0e/a1/f9/0ea1f9393a423e4198644ec9408317ce.jpg", // Optional
   },
-  // Add more products here
+  {
+    id: 2,
+    image:
+      "https://i.pinimg.com/474x/a9/95/27/a99527df5f3be478ded05371d998a060.jpg",
+    name: "Product 1",
+    price: 199.0,
+    originalPrice: 400.0,
+    isNew: true,
+    discount: 50,
+    rating:
+      "https://i.pinimg.com/564x/0e/a1/f9/0ea1f9393a423e4198644ec9408317ce.jpg", // Optional
+  },
+  {
+    id: 3,
+    image:
+      "https://i.pinimg.com/236x/91/3f/4a/913f4a71da79ce423e3bf5ae46cf9c54.jpg",
+    name: "Product 2", // Change name for uniqueness
+    price: 199.0,
+    originalPrice: 400.0,
+    isNew: true,
+    discount: 50,
+    rating:
+      "https://i.pinimg.com/564x/0e/a1/f9/0ea1f9393a423e4198644ec9408317ce.jpg", // Optional
+  },
+  {
+    id: 4,
+    image:
+      "https://i.pinimg.com/474x/e7/eb/fb/e7ebfb6346be8b771db8e195b5a47e1b.jpg",
+    name: "Product 3", // Change name for uniqueness
+    price: 199.0,
+    originalPrice: 400.0,
+    isNew: true,
+    discount: 50,
+    rating:
+      "https://i.pinimg.com/564x/0e/a1/f9/0ea1f9393a423e4198644ec9408317ce.jpg", // Optional
+  },
+  {
+    id: 5,
+    image:
+      "https://i.pinimg.com/474x/a2/cc/37/a2cc37c96dedc3018aa9f484cf0ea7e2.jpg",
+    name: "Product 4", // Change name for uniqueness
+    price: 199.0,
+    originalPrice: 400.0,
+    isNew: true,
+    discount: 50,
+    rating:
+      "https://i.pinimg.com/564x/0e/a1/f9/0ea1f9393a423e4198644ec9408317ce.jpg", // Optional
+  },
+  {
+    id: 6,
+    image:
+      "https://i.pinimg.com/474x/43/84/8b/43848b3a937b3d4e96fc5ab48bccf494.jpg",
+    name: "Product 5", // Change name for uniqueness
+    price: 199.0,
+    originalPrice: 400.0,
+    isNew: true,
+    discount: 50,
+    rating:
+      "https://i.pinimg.com/564x/0e/a1/f9/0ea1f9393a423e4198644ec9408317ce.jpg", // Optional
+  },
+  {
+    id: 7,
+    image:
+      "https://i.pinimg.com/474x/e3/27/f2/e327f2fa25502d1e8376c4d875babb7b.jpg",
+    name: "Product 6", // Change name for uniqueness
+    price: 199.0,
+    originalPrice: 400.0,
+    isNew: true,
+    discount: 50,
+    rating:
+      "https://i.pinimg.com/564x/0e/a1/f9/0ea1f9393a423e4198644ec9408317ce.jpg", // Optional
+  },
+  {
+    id: 8,
+    image:
+      "https://i.pinimg.com/474x/36/7e/22/367e22664f75ad4ca39539c8ef0dd71a.jpg",
+    name: "Product 7", // Change name for uniqueness
+    price: 299.0,
+    originalPrice: 500.0,
+    isNew: true,
+    discount: 40,
+    rating:
+      "https://i.pinimg.com/564x/0e/a1/f9/0ea1f9393a423e4198644ec9408317ce.jpg", // Optional
+  },
+  {
+    id: 9,
+    image:
+      "https://i.pinimg.com/474x/f5/61/b1/f561b16383762c5b6d7a8f39f3c19a02.jpg",
+    name: "Product 8", // Change name for uniqueness
+    price: 249.0,
+    originalPrice: 450.0,
+    isNew: false,
+    discount: 10,
+    rating:
+      "https://i.pinimg.com/564x/0e/a1/f9/0ea1f9393a423e4198644ec9408317ce.jpg", // Optional
+  },
 ];
 
 const categories = [
   {
-    title: "Living Room",
+    title: "Tunisian Jars",
     image:
-      "https://cdn.builder.io/api/v1/image/assets/9ae4fe26caea4ec4b922b3cd752ddc12/3880fc18463c9844e2f739b1d338e1eabc7e68ffb533e56c56c468bc57f5c6f1?apiKey=9ae4fe26caea4ec4b922b3cd752ddc12&",
+      "https://i.pinimg.com/474x/ff/83/9d/ff839db119b6e89be9966d63d74b9354.jpg",
     className: "min-h-[664px]",
   },
   {
-    title: "Bedroom",
+    title: "Tradition bowls",
     image:
-      "https://cdn.builder.io/api/v1/image/assets/9ae4fe26caea4ec4b922b3cd752ddc12/5785ccbe4b36753ef3876023f4eb7809e2e71a8af3c7fdf8e8b29f8d8dd0641c?apiKey=9ae4fe26caea4ec4b922b3cd752ddc12&",
+      "https://i.pinimg.com/474x/c5/e3/3e/c5e33e73113885ba2548d6c50547d002.jpg",
   },
   {
-    title: "Kitchen",
+    title: "Khazaf",
     image:
-      "https://cdn.builder.io/api/v1/image/assets/9ae4fe26caea4ec4b922b3cd752ddc12/1dc7f7dc6e173e1b1e35aa654674d62d606fef952d0576f0ec38fbab876e4beb?apiKey=9ae4fe26caea4ec4b922b3cd752ddc12&",
+      "https://i.pinimg.com/474x/5b/f9/ec/5bf9ecee4f0f6d9c2995627439bdbc23.jpg",
   },
 ];
 
@@ -67,7 +163,10 @@ export function HomePage() {
 
       <section className="flex flex-col items-center pt-12 pl-20 w-full bg-white max-md:pl-5 max-md:max-w-full">
         <div className="flex flex-wrap gap-5 justify-between w-full font-medium tracking-tight max-w-[1120px] max-md:max-w-full">
-          <h2 className="text-4xl leading-10 text-black">
+          <h2
+            className="text-4xl leading-10 text-black"
+            style={{ color: "#EBBE43" }}
+          >
             New
             <br />
             Arrivals
@@ -125,10 +224,16 @@ export function HomePage() {
                     alt=""
                     className="object-contain w-12 aspect-square"
                   />
-                  <h3 className="mt-4 text-xl font-medium leading-snug text-neutral-900">
+                  <h3
+                    className="mt-4 text-xl font-medium leading-snug"
+                    style={{ color: "#EBBE43" }}
+                  >
                     {feature.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-6 text-zinc-500">
+                  <p
+                    className="mt-2 text-sm leading-6 text-zinc-500"
+                    style={{ color: "#EBBE43" }}
+                  >
                     {feature.description}
                   </p>
                 </div>
@@ -143,4 +248,5 @@ export function HomePage() {
     </main>
   );
 }
+
 export default HomePage;

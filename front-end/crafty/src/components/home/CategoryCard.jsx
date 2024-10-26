@@ -14,10 +14,12 @@ export function CategoryCard({ title, image, className }) {
           className="object-cover absolute inset-0 size-full"
         />
         <div className="flex relative flex-col w-full">
-          <h2 className="text-4xl tracking-tight leading-none">{title}</h2>
+          <h2 className="text-4xl tracking-tight leading-none text-[#EBBE43]">
+            {title}
+          </h2>
           <Link
             to={`/category/${title.toLowerCase()}`}
-            className="flex gap-1 items-center self-start mt-3 text-base tracking-tight leading-7 border-b border-solid border-b-neutral-900"
+            className="flex gap-1 items-center self-start mt-3 text-base tracking-tight leading-7 text-[#EBBE43] border-b border-solid border-b-neutral-900"
           >
             Shop Now
             <img
