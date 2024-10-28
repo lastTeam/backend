@@ -11,13 +11,21 @@ exports.getAllProducts = async (req, res) => {
 };
 
 exports.getProductById = async (req, res) => {
-    try {
-        const product = await prisma.product.findUnique({
-            where: { id: parseInt(req.params.id) }
-        });
-        if (!product) return res.status(404).json({ error: 'Product not found' });
-        res.status(200).json({ product });
-    } catch (error) {
-        res.status(500).json({ error: 'Something went wrong' });
-    }
+  try {
+    const product = await prisma.product.findUnique({
+      where: { id: parseInt(req.params.productId) },
+      include: {
+        seller: { select: { firstName: true, lastName: true, username: true, email: true } }, // seller details
+        reviews: {
+          include: { user: { select: { username: true } } } // review details with username of reviewer
+        },
+      },
+    });
+
+    if (!product) return res.status(404).json({ error: 'Product not found' });
+    res.status(200).json(product);
+  } catch (error) {
+    res.status(500).json({ error: 'Something went wrong' });
+  }
 };
+
