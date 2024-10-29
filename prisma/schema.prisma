@@ -1,4 +1,5 @@
 
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -59,7 +60,8 @@ model Product {
   category       Category  @relation(fields: [categoryId], references: [id])
   reviews        Review[]  @relation("ProductReviews")
   orders         Order[]   @relation("ProductOrders")
-  users          User[]    
+  ownerId     Int
+  owner       User  @relation(fields: [ownerId], references: [id])   
 }
 
 // Model for 'Review'
