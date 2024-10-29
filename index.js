@@ -4,11 +4,17 @@ const orderRoutes = require("./routes/orderRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
 const categoryRoutes = require("./routes/categoriesRoutes");
+const getProdBytitleRouter = require ("./routes/getOneProdRoutes.js")
 const express = require("express");
 const cors = require("cors");
 const router = require("./routes/authRoutes.js");
-const { PrismaClient } = require("@prisma/client");
 const app = express();
+
+
+
+
+
+
 
 app.use(cors());
 app.use(express.json());
@@ -21,7 +27,7 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/chats", chatRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/category", categoryRoutes);
-
+app.use("/api" ,getProdBytitleRouter )
 // Error handler middleware
 app.use((err, req, res, next) => {
   res
@@ -35,6 +41,7 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/chats", chatRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api", router);
+app.use("/api/category", categoryRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
