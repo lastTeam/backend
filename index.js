@@ -3,6 +3,7 @@ const userRoutes = require("./routes/userRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
+const categoryRoutes = require("./routes/categoriesRoutes");
 const express = require("express");
 const cors = require("cors");
 const router = require("./routes/authRoutes.js");
@@ -19,6 +20,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/chats", chatRoutes);
 app.use("/api/reviews", reviewRoutes);
+app.use("/api/category", categoryRoutes);
 
 // Error handler middleware
 app.use((err, req, res, next) => {
