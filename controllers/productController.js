@@ -3,9 +3,31 @@ const prisma = new PrismaClient();
 
 exports.getAllProducts = async (req, res) => {
   try {
-    const products = await prisma.product.findMany();
+    const products = await prisma.product.findMany({
+      include: {
+        owner: {
+          select: {
+            firstName: true,
+            lastName: true,
+            username: true,
+            email: true,
+          },
+        },
+        category: {
+          select: { name: true },
+        },
+        reviews: {
+          include: {
+            user: {
+              select: { username: true },
+            },
+          },
+        },
+      },
+    });
     res.status(200).json({ products });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Something went wrong" });
   }
 };
@@ -14,10 +36,34 @@ exports.getProductById = async (req, res) => {
   try {
     const product = await prisma.product.findUnique({
       where: { id: parseInt(req.params.id) },
+      include: {
+        owner: {
+          select: {
+            firstName: true,
+            lastName: true,
+            username: true,
+            email: true,
+          },
+        },
+        category: {
+          select: { name: true },
+        },
+        reviews: {
+          include: {
+            user: {
+              select: { username: true },
+            },
+          },
+        },
+      },
     });
-    if (!product) return res.status(404).json({ error: "Product not found" });
-    res.status(200).json({ product });
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    res.status(200).json(product);
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Something went wrong" });
   }
 };
@@ -34,17 +80,23 @@ exports.addProduct = async (req, res) => {
       variants,
       images,
       categoryId,
+      ownerId,
     } = req.body;
 
-    // Validate the received data
-    if (!title || !description || !sku || !basePrice || !categoryId) {
+    if (
+      !title ||
+      !description ||
+      !sku ||
+      !basePrice ||
+      !categoryId ||
+      !ownerId
+    ) {
       return res.status(400).json({
         error:
-          "Title, description, SKU, base price, and category ID are required.",
+          "Title, description, SKU, base price, category ID, and owner ID are required.",
       });
     }
 
-    // Check if product with the same SKU already exists
     const existingProduct = await prisma.product.findUnique({
       where: { sku: sku },
     });
@@ -55,7 +107,6 @@ exports.addProduct = async (req, res) => {
         .json({ error: "SKU already exists. Please use a unique SKU." });
     }
 
-    // Ensure basePrice and discountPrice are decimals
     const newProduct = await prisma.product.create({
       data: {
         title,
@@ -63,23 +114,24 @@ exports.addProduct = async (req, res) => {
         sku,
         basePrice: parseFloat(basePrice),
         discountPrice: discountPrice ? parseFloat(discountPrice) : null,
-        colors: colors || null,
-        variants: variants || null,
-        images: images || null,
+        colors: colors || {},
+        variants: variants || {},
+        images: images || {},
         category: { connect: { id: categoryId } },
+        owner: { connect: { id: ownerId } },
       },
     });
 
     res.status(201).json({ product: newProduct });
   } catch (error) {
-    console.error(error); // Log the error for debugging
+    console.error(error);
     res.status(500).json({ error: "Something went wrong" });
   }
 };
 
 exports.deleteProduct = async (req, res) => {
   try {
-    const productId = parseInt(req.params.id); // Get the ID from the route params
+    const productId = parseInt(req.params.id);
     await prisma.product.delete({
       where: { id: productId },
     });
