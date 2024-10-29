@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const { PrismaClient } = require("@prisma/client");
+const bodyParser = require("body-parser");
 const productRoutes = require("./routes/productRoutes");
 const userRoutes = require("./routes/userRoutes");
 const orderRoutes = require("./routes/orderRoutes");
@@ -8,13 +9,13 @@ const chatRoutes = require("./routes/chatRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
 const categoryRoutes = require("./routes/categoriesRoutes");
 const authRoutes = require("./routes/authRoutes");
-
+const cartRoutes = require("./routes/cartRoutes");
 const app = express();
-
 // Middleware setup
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // API routes
 app.use("/api/products", productRoutes);
@@ -24,6 +25,7 @@ app.use("/api/chats", chatRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/auth", authRoutes); // Updated to use 'authRoutes'
+app.use("/api/cart", cartRoutes);
 
 // Error handler middleware
 app.use((err, req, res, next) => {
