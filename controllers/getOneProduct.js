@@ -1,15 +1,20 @@
 const { PrismaClient } = require('@prisma/client');
 const prod = new PrismaClient ()
-const getProductById = async (req,res) =>{
-    const {id} =req.params
+
+const getProductBytitle = async (req,res) =>{
+    const {title} =req.params
+
     try {
-        const product = await prod.findById(id)
+        const product = await prod.product.findMany({where : {title}})
+        
         if (!product) {
             return res.status(404).json({error : "product is not found !"})
         }
         res.json(product)
     } catch (err) {
+        console.log(err);
+
         res.status(500).json({error : "failed to retrieve product !"})
     }
 }
-module.exports = getProductById
+module.exports = getProductBytitle
