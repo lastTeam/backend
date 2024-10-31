@@ -22,7 +22,9 @@ console.log(req.body);
                 roles
             },
         });
-        res.status(201).json({ message: 'User registered successfully!' });
+        res.status(201).json( newUser );
+        console.log(newUser);
+        
     } catch (error) {
         console.log(error);
         
