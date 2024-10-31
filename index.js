@@ -10,6 +10,7 @@ const reviewRoutes = require("./routes/reviewRoutes");
 const categoryRoutes = require("./routes/categoriesRoutes");
 const authRoutes = require("./routes/authRoutes");
 const cartRoutes = require("./routes/cartRoutes");
+const router = require("./routes/authRoutes.js");
 const app = express();
 // Middleware setup
 app.use(cors());
@@ -35,6 +36,14 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
+app.use("/api/products", productRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/chats", chatRoutes);
+app.use("/api/reviews", reviewRoutes);
+app.use("/api", router);
+app.use("/api/category", categoryRoutes);
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

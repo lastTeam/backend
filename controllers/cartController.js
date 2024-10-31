@@ -3,33 +3,26 @@ const prisma = new PrismaClient();
 
 // Get cart items for a specific user
 const getCartItems = async (req, res) => {
-  const { userId } = req.params; // Get userId from the route parameters
+  const { userId } = req.params;
 
   try {
-    // Convert userId to an integer
     const userIdInt = parseInt(userId, 10);
 
     if (isNaN(userIdInt)) {
       return res.status(400).json({ message: "Invalid user ID." });
     }
 
-    // Fetch the cart order for the user
-    const order = await prisma.order.findFirst({
+    const orders = await prisma.order.findMany({
       where: {
-        userId: userIdInt, // Use the integer value
+        userId: userIdInt,
         status: "cart",
       },
       include: {
-        product: true, // Assuming you have a relation to fetch product details
+        product: true,
       },
     });
 
-    if (!order) {
-      return res.status(404).json({ message: "Cart not found for this user." });
-    }
-
-    // Return the items in the cart
-    return res.status(200).json(order);
+    return res.status(200).json(orders);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Error fetching cart items." });
@@ -38,10 +31,9 @@ const getCartItems = async (req, res) => {
 
 // Add item to cart
 const addToCart = async (req, res) => {
-  const { productId, userId, quantity } = req.body; // Assuming you send productId, userId, and quantity in the request body
+  const { productId, userId, quantity } = req.body;
 
   try {
-    // Check if the product exists
     const product = await prisma.product.findUnique({
       where: { id: productId },
     });
@@ -52,36 +44,33 @@ const addToCart = async (req, res) => {
 
     const productPrice = product.discountPrice || product.basePrice;
 
-    // Check if a cart order exists for the user
+    // Check if this product is already in the user's cart
     const existingOrder = await prisma.order.findFirst({
       where: {
         userId: userId,
+        productId: productId,
         status: "cart",
       },
     });
 
     if (existingOrder) {
-      // Update the existing order by adding the product
+      // If the product is already in cart, you might want to update quantity instead
       await prisma.order.update({
         where: { id: existingOrder.id },
         data: {
-          productId: productId,
           price: productPrice,
-          status: "cart",
-          paymentIntent: "pending", // Placeholder
-          paymentStatus: "pending", // Placeholder for payment status
         },
       });
     } else {
-      // Create a new order if it doesn't exist
+      // Create a new order for this product
       await prisma.order.create({
         data: {
           userId: userId,
           productId: productId,
           price: productPrice,
           status: "cart",
-          paymentIntent: "pending", // Placeholder
-          paymentStatus: "pending", // Placeholder for payment status
+          paymentIntent: "pending",
+          paymentStatus: "pending",
         },
       });
     }
@@ -95,7 +84,49 @@ const addToCart = async (req, res) => {
   }
 };
 
+// Delete item from cart
+const deleteFromCart = async (req, res) => {
+  const { userId, productId } = req.params;
+
+  try {
+    const userIdInt = parseInt(userId, 10);
+    const productIdInt = parseInt(productId, 10);
+
+    if (isNaN(userIdInt) || isNaN(productIdInt)) {
+      return res
+        .status(400)
+        .json({ message: "Invalid user ID or product ID." });
+    }
+
+    const order = await prisma.order.findFirst({
+      where: {
+        userId: userIdInt,
+        productId: productIdInt,
+        status: "cart",
+      },
+    });
+
+    if (!order) {
+      return res.status(404).json({ message: "Cart item not found." });
+    }
+
+    await prisma.order.delete({
+      where: {
+        id: order.id,
+      },
+    });
+
+    return res
+      .status(200)
+      .json({ message: "Item removed from cart successfully." });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Error removing item from cart." });
+  }
+};
+
 module.exports = {
   getCartItems,
   addToCart,
+  deleteFromCart,
 };
