@@ -83,9 +83,17 @@ exports.addProduct = async (req, res) => {
       ownerId,
     } = req.body;
 
-    if (!title || !description || !sku || !basePrice || !categoryId || !ownerId) {
+    if (
+      !title ||
+      !description ||
+      !sku ||
+      !basePrice ||
+      !categoryId ||
+      !ownerId
+    ) {
       return res.status(400).json({
-        error: "Title, description, SKU, base price, category ID, and owner ID are required.",
+        error:
+          "Title, description, SKU, base price, category ID, and owner ID are required.",
       });
     }
 
