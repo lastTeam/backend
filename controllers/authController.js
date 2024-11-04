@@ -49,7 +49,7 @@ const login = async (req, res) => {
     const token = jwt.sign({ id: user.id }, "your_secret_key", {
       expiresIn: "30h",
     });
-    res.status(200).json({ token });
+    res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ error: "Error logging in" });
   }
