@@ -1,18 +1,28 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-exports.createCategory = async (req, res) => {
+exports.getAllCategories = async (req, res) => {
   try {
-    const { name } = req.body; // Extracting name from request body
-
-    // Creating a new category
-    const newCategory = await prisma.category.create({
-      data: {
-        name: name, // Use the extracted name
+    const categories = await prisma.category.findMany({
+      orderBy: {
+        name: "asc",
       },
     });
+    res.status(200).json(categories);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch categories" });
+  }
+};
 
-    // Responding with the created category
+exports.createCategory = async (req, res) => {
+  try {
+    const { name } = req.body;
+    const newCategory = await prisma.category.create({
+      data: {
+        name: name,
+      },
+    });
     res.status(201).json({ category: newCategory });
   } catch (error) {
     res.status(500).json({ error: "Failed to create category" });

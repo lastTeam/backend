@@ -12,6 +12,7 @@ const authRoutes = require("./routes/authRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const router = require("./routes/authRoutes.js");
 const getProdBytitleRouter = require("./routes/getOneProdRoutes.js");
+const uploadRoutes = require("./config/upload.js");
 const app = express();
 // Middleware setup
 app.use(cors());
@@ -30,6 +31,8 @@ app.use("/api/auth", authRoutes); // Updated to use 'authRoutes'
 app.use("/api/cart", cartRoutes);
 app.use("/api/getProd", getProdBytitleRouter);
 app.use("/api", router);
+app.use("/api", uploadRoutes);
+
 // Error handler middleware
 app.use((err, req, res, next) => {
   res
