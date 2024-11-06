@@ -46,10 +46,10 @@ const login = async (req, res) => {
       return res.status(401).json({ error: "Incorrect password" });
     }
 
-    const token = jwt.sign({ id: user.id }, "your_secret_key", {
+    const token = jwt.sign({ id: user.id , role: user.roles  }, "your_secret_key", {
       expiresIn: "30h",
     });
-    res.status(200).json(user);
+    res.status(200).json({ token ,  role: user.roles  });
   } catch (error) {
     res.status(500).json({ error: "Error logging in" });
   }
