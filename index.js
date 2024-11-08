@@ -16,6 +16,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 const chatRoutes = require('./routes/chatRoutes');
 
+const wishlistRoutes = require("./routes/wishlistRoutes");
 const app = express();
 
 const server = http.createServer(app);
@@ -63,7 +64,11 @@ app.use("/api/auth", authRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/getProd", getProdBytitleRouter);
 app.use("/api", uploadRoutes);
+
 app.use("/api" , router)
+
+app.use("/api", wishlistRoutes);
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {
