@@ -32,6 +32,15 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
+
+  // Check for admin credentials
+  if (email === "admin@crafty.com" && password === "admin123") {
+    const token = jwt.sign({ role: "ADMIN" }, "your_secret_key", {
+      expiresIn: "30h",
+    });
+    return res.status(200).json({ token, role: "ADMIN" });
+  }
+
   try {
     const user = await prisma.user.findUnique({
       where: { email },
@@ -46,10 +55,12 @@ const login = async (req, res) => {
       return res.status(401).json({ error: "Incorrect password" });
     }
 
-    const token = jwt.sign({ id: user.id , role: user.roles  }, "your_secret_key", {
-      expiresIn: "30h",
-    });
-    res.status(200).json({ token ,  role: user.roles  });
+    const token = jwt.sign(
+      { id: user.id, role: user.roles },
+      "your_secret_key",
+      { expiresIn: "30h" }
+    );
+    res.status(200).json({ token, role: user.roles });
   } catch (error) {
     res.status(500).json({ error: "Error logging in" });
   }
