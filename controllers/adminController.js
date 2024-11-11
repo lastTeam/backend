@@ -75,7 +75,7 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-// Delete user
+// Delete user - Fixed version for your schema
 exports.deleteUser = async (req, res) => {
   try {
     const userId = parseInt(req.params.id);
@@ -89,29 +89,61 @@ exports.deleteUser = async (req, res) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    if (user.isAdmin) {
+    // Prevent deletion of admin users
+    if (user.roles === "ADMIN" || user.isAdmin) {
       return res.status(403).json({ error: "Cannot delete admin user" });
     }
 
-    // Delete all related records first
-    await prisma.$transaction([
-      prisma.review.deleteMany({ where: { userId } }),
-      prisma.order.deleteMany({ where: { userId } }),
-      prisma.chat.deleteMany({ 
-        where: { 
-          OR: [
-            { senderId: userId },
-            { receiverId: userId }
-          ]
-        }
-      }),
-      prisma.product.deleteMany({ where: { ownerId: userId } }),
-      prisma.user.delete({ where: { id: userId } })
-    ]);
+    try {
+      // Use transaction to ensure all deletes happen or none do
+      await prisma.$transaction([
+        // 1. Delete reviews by the user
+        prisma.review.deleteMany({
+          where: { userId }
+        }),
 
-    res.status(200).json({ message: "User deleted successfully" });
+        // 2. Delete chat messages sent or received by the user
+        prisma.chat.deleteMany({
+          where: {
+            OR: [
+              { senderId: userId },
+              { receiverId: userId }
+            ]
+          }
+        }),
+
+        // 3. Delete orders related to user's products or made by the user
+        prisma.order.deleteMany({
+          where: {
+            OR: [
+              { userId },
+              {
+                product: {
+                  ownerId: userId
+                }
+              }
+            ]
+          }
+        }),
+
+        // 4. Delete products owned by the user
+        prisma.product.deleteMany({
+          where: { ownerId: userId }
+        }),
+
+        // 5. Finally delete the user
+        prisma.user.delete({
+          where: { id: userId }
+        })
+      ]);
+
+      res.status(200).json({ message: "User deleted successfully" });
+    } catch (transactionError) {
+      console.error('Transaction error:', transactionError);
+      res.status(500).json({ error: "Error during deletion process" });
+    }
   } catch (error) {
-    console.error(error);
+    console.error('Main error:', error);
     res.status(500).json({ error: "Something went wrong" });
   }
 };
